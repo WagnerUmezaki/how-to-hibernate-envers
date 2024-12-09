@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+  <changeSet id="create-purchase-order-table-sequence" author="wumezaki">
+    <comment>Create sequence for purchase_order table</comment>
+    <createSequence sequenceName="sq_purchase_order_id" incrementBy="1" startValue="1"/>
+  </changeSet>
+
+  <changeSet id="create-purchase-order-table" author="wagner.umezaki">
+    <comment>Create purchase_order table</comment>
+    <createTable tableName="purchase_order">
+      <column name="id" type="bigint" defaultValueComputed="nextval('sq_purchase_order_id')">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="code" type="varchar(36)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="status" type="varchar(15)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="user" type="varchar(36)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="create-purchase-order-item-table-sequence" author="wumezaki">
+    <comment>Create sequence for purchase_order_item table</comment>
+    <createSequence sequenceName="sq_purchase_order_item_id" incrementBy="1" startValue="1"/>
+  </changeSet>
+
+  <changeSet id="create-purchase-order_item-table" author="wagner.umezaki">
+    <comment>Create purchase_order_item table</comment>
+    <createTable tableName="purchase_order_item">
+      <column name="id" type="bigint" defaultValueComputed="nextval('sq_purchase_order_item_id')">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="item_code" type="varchar(36)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="quantity" type="integer">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+</databaseChangeLog>
