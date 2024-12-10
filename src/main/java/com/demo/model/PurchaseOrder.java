@@ -2,6 +2,7 @@ package com.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -10,6 +11,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+@Audited
 @Builder
 @Entity
 @Table(name = "purchase_order")
@@ -37,6 +39,7 @@ public class PurchaseOrder {
     @Column(name = "code", nullable = false, unique = true)
     private String code;
 
+    @Audited(withModifiedFlag = true)
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status", nullable = false)
     private PurchaseOrderStatus status;

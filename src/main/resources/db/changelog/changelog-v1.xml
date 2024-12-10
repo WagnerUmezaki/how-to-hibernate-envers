@@ -52,6 +52,9 @@
       <column name="quantity" type="integer">
         <constraints nullable="false"/>
       </column>
+      <column name="purchase_order" type="bigint">
+        <constraints nullable="false"/>
+      </column>
       <column name="created_at" type="datetime">
         <constraints nullable="false"/>
       </column>
@@ -59,14 +62,6 @@
         <constraints nullable="false"/>
       </column>
     </createTable>
-  </changeSet>
-
-  <changeSet id="add-order-column-on-item" author="wumezaki">
-    <addColumn tableName="purchase_order_item">
-      <column name="purchase_order" type="bigint">
-        <constraints nullable="false"/>
-      </column>
-    </addColumn>
   </changeSet>
 
   <changeSet id="add-order-column-fk-on-item" author="wumezaki">
@@ -77,6 +72,103 @@
                              onUpdate="NO ACTION"
                              referencedColumnNames="id"
                              referencedTableName="purchase_order"/>
+  </changeSet>
+
+  <changeSet id="create-reinfo-table" author="wumezaki">
+    <comment>Creation of tables and sequence for hibernate envers</comment>
+    <createSequence sequenceName="sq_revinfo_idt" incrementBy="1" startValue="1"/>
+    <createTable tableName="revinfo">
+      <column name="rev" type="bigint" defaultValueComputed="nextval('sq_revinfo_idt')">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="revtstmp" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="create-purchase-order-aud-table" author="wumezaki">
+    <createTable tableName="purchase_order_aud">
+      <column name="rev" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="revtype" type="tinyint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="id" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="code" type="varchar(36)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="varchar(15)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status_mod" type="boolean"/>
+      <column name="customer" type="varchar(36)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addPrimaryKey columnNames="id, rev"
+                   constraintName="purchase_order_aud_pk"
+                   tableName="purchase_order_aud"/>
+    <addForeignKeyConstraint baseColumnNames="rev"
+                             baseTableName="purchase_order_aud"
+                             constraintName="purchase_order_aud_revinfo_fk"
+                             onDelete="NO ACTION"
+                             onUpdate="NO ACTION"
+                             referencedColumnNames="rev"
+                             referencedTableName="revinfo"/>
+  </changeSet>
+
+  <changeSet id="create-purchase-order-item-aud-table" author="wumezaki">
+    <createTable tableName="purchase_order_item_aud">
+      <column name="rev" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="revtype" type="tinyint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="id" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="item_code" type="varchar(36)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="quantity" type="integer">
+        <constraints nullable="false"/>
+      </column>
+      <column name="purchase_order" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addPrimaryKey columnNames="id, rev"
+                   constraintName="purchase_order_item_aud_pk"
+                   tableName="purchase_order_item_aud"/>
+    <addForeignKeyConstraint baseColumnNames="rev"
+                             baseTableName="purchase_order_item_aud"
+                             constraintName="purchase_order_item_aud_revinfo_fk"
+                             onDelete="NO ACTION"
+                             onUpdate="NO ACTION"
+                             referencedColumnNames="rev"
+                             referencedTableName="revinfo"/>
   </changeSet>
 
 </databaseChangeLog>

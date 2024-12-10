@@ -13,6 +13,10 @@ spring:
     hibernate:
       ddl-auto: validate
     properties:
+      org:
+        hibernate:
+          envers:
+            do_not_audit_optimistic_locking_field: false
       hibernate:
         format_sql: true
   liquibase:
