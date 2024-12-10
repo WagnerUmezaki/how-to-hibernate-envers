@@ -1,8 +1,7 @@
 package com.demo.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,6 +13,9 @@ import java.time.Instant;
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class PurchaseOrderItem {
 
     @Id
@@ -22,11 +24,16 @@ public class PurchaseOrderItem {
     @Column(name = "id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "item_code", nullable = false)
-    private String itemCode;
+    private Product itemCode;
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "purchase_order", nullable = false)
+    private PurchaseOrder purchaseOrder;
 
     @CreatedDate
     @Column(name = "created_at")

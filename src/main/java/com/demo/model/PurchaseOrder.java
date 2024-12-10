@@ -1,19 +1,23 @@
 package com.demo.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
+@Builder
 @Entity
 @Table(name = "purchase_order")
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor
+@NoArgsConstructor
 public class PurchaseOrder {
 
     public enum PurchaseOrderStatus {
@@ -37,8 +41,11 @@ public class PurchaseOrder {
     @Column(name = "status", nullable = false)
     private PurchaseOrderStatus status;
 
-    @Column(name = "user", nullable = false)
-    private String user;
+    @Column(name = "customer", nullable = false)
+    private String customer;
+
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
+    private List<PurchaseOrderItem> purchaseOrderItems = new ArrayList<>();
 
     @Version
     private int version;

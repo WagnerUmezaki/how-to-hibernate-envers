@@ -20,7 +20,7 @@
       <column name="status" type="varchar(15)">
         <constraints nullable="false"/>
       </column>
-      <column name="user" type="varchar(36)">
+      <column name="customer" type="varchar(36)">
         <constraints nullable="false"/>
       </column>
       <column name="version" type="integer">
@@ -59,6 +59,24 @@
         <constraints nullable="false"/>
       </column>
     </createTable>
+  </changeSet>
+
+  <changeSet id="add-order-column-on-item" author="wumezaki">
+    <addColumn tableName="purchase_order_item">
+      <column name="purchase_order" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet id="add-order-column-fk-on-item" author="wumezaki">
+    <addForeignKeyConstraint baseColumnNames="purchase_order"
+                             baseTableName="purchase_order_item"
+                             constraintName="purchase_order_item_purchase_order_fk"
+                             onDelete="NO ACTION"
+                             onUpdate="NO ACTION"
+                             referencedColumnNames="id"
+                             referencedTableName="purchase_order"/>
   </changeSet>
 
 </databaseChangeLog>

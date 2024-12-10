@@ -1,6 +1,7 @@
 server:
   port: 8081
 
+# https://docs.redhat.com/en/documentation/red_hat_jboss_web_server/2/html/hibernate_core_guide/envers_configuration_properties#Envers_Configuration_Properties
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
