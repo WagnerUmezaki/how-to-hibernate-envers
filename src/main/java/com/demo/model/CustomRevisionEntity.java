@@ -1,13 +1,21 @@
 package com.demo.model;
 
+import com.demo.config.CustomRevisionListener;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
 
+/**
+ * @see org.hibernate.envers.DefaultRevisionEntity
+ */
 @Entity
 @Table(name="REVINFO")
-@RevisionEntity
+@RevisionEntity(CustomRevisionListener.class)
+@Getter
+@Setter
 public class CustomRevisionEntity {
 
     @Id

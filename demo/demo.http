@@ -1,0 +1,54 @@
+### Get Order by ID
+GET http://localhost:8081/purchase-order/1
+
+### Create order in a single transaction
+POST http://localhost:8081/purchase-order/create-in-one-transaction
+Content-Type: application/json
+
+{
+  "customer": "e67d4870-7ef7-45b4-b417-8b2a89706a3d",
+  "purchaseOrderItems": [
+    {
+      "itemCode": "PRODUCT_1",
+      "quantity": 2
+    },
+    {
+      "itemCode": "PRODUCT_2",
+      "quantity": 3
+    }
+  ]
+}
+
+### Update order status
+POST http://localhost:8081/purchase-order/update-status
+Content-Type: application/json
+
+{
+  "purchaseOrderId": 1,
+  "status": "WAITING_PAYMENT"
+}
+
+### Update order status and item quantity in a single transaction
+POST http://localhost:8081/purchase-order/update-status-and-item-quantity
+Content-Type: application/json
+
+{
+  "purchaseOrderId": 1,
+  "status": "PAID",
+  "productCode": "PRODUCT_1",
+  "quantity": 10
+}
+
+### Update order status and item quantity in separate transactions
+POST http://localhost:8081/purchase-order/update-status-and-item-quantity-in-separate-transactions
+Content-Type: application/json
+
+{
+  "purchaseOrderId": 1,
+  "status": "DONE",
+  "productCode": "PRODUCT_1",
+  "quantity": 20
+}
+
+
+

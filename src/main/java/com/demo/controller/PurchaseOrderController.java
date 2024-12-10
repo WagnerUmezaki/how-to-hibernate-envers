@@ -3,6 +3,7 @@ package com.demo.controller;
 import com.demo.controller.request.PurchaseOrderCreationRequest;
 import com.demo.controller.request.UpdateOrderStatusAndItemQuantityRequest;
 import com.demo.controller.request.UpdateOrderStatusRequest;
+import com.demo.controller.response.PurchaseOrderHistoryResponse;
 import com.demo.controller.response.PurchaseOrderResponse;
 import com.demo.model.PurchaseOrder;
 import com.demo.service.PurchaseOrderService;
@@ -49,4 +50,8 @@ public class PurchaseOrderController {
         return PurchaseOrderResponse.fromEntity(purchaseOrderService.changeOrderQuantity(updateOrderStatusAndItemQuantityRequest));
     }
 
+    @GetMapping(value = "/history/{purchaseOrderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public PurchaseOrderHistoryResponse test(@PathVariable("purchaseOrderId") final Long purchaseOrderId) {
+        return PurchaseOrderHistoryResponse.fromEntities(purchaseOrderService.getHistory(purchaseOrderId));
+    }
 }

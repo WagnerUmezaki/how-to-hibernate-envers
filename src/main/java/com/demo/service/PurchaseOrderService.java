@@ -4,15 +4,23 @@ import com.demo.controller.request.UpdateOrderStatusAndItemQuantityRequest;
 import com.demo.controller.request.UpdateOrderStatusRequest;
 import com.demo.model.PurchaseOrder;
 import com.demo.repository.PurchaseOrderRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.query.AuditEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PurchaseOrderService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
+    private final EntityManager entityManager;
 
     public PurchaseOrder find(final Long id) {
         return purchaseOrderRepository.findById(id).orElseThrow();
@@ -68,5 +76,24 @@ public class PurchaseOrderService {
         });
 
         return purchaseOrderRepository.save(purchaseOrder);
+    }
+
+    public List<PurchaseOrder> getHistory(Long purchaseOrderId) {
+        final AuditReader auditReader = AuditReaderFactory.get(entityManager);
+
+        final List<Number> revisions = auditReader.getRevisions(PurchaseOrder.class, purchaseOrderId);
+
+        if (revisions.isEmpty()) {
+            return List.of();
+        }
+
+        final List<Object[]> results = auditReader.createQuery()
+                .forRevisionsOfEntity(PurchaseOrder.class, false, false)
+                .add(AuditEntity.id().eq(purchaseOrderId))
+                .getResultList();
+
+        return results.stream()
+                .map(element -> (PurchaseOrder) element[0])
+                .toList();
     }
 }

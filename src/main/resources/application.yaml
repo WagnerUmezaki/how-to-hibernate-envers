@@ -17,6 +17,7 @@ spring:
         hibernate:
           envers:
             do_not_audit_optimistic_locking_field: false
+            revision_on_collection_change: true
       hibernate:
         format_sql: true
   liquibase:
